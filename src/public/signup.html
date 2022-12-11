@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+  </head>
+  <body>
+    <h1>Sign Up</h1>
+    <div class="login">
+      <form>
+        <label for="firstName">First Name</label>
+        <input type="text" name="firstName" id="firstName" />
+        <label for="lastName">Last Name</label>
+        <input type="text" name="lastName" id="lastName" />
+        <label for="username">User Name</label>
+        <input type="text" name="username" id="username" />
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" />
+        <button type="submit">Sign Up</button>
+      </form>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/login.html">Login</a></li>
+      </ul>
+    </nav>
+    <script>
+      const form = document.querySelector('form');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const userName = formData.get('username');
+        const password = formData.get('password');
+        const firstName = formData.get('firstName');
+        const lastName = formData.get('lastName');
+
+        const data = await fetch('/auth/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ firstName, lastName, userName, password }),
+        });
+
+        if (data.status.toString().startsWith('2')) {
+          alert('Sign up successful');
+        } else {
+          alert('Something went wrong');
+        }
+
+        console.log(...formData);
+        console.log(data);
+      });
+    </script>
+  </body>
+</html>

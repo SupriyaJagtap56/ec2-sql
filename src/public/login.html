@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+  </head>
+  <body>
+    <h1>Login Page</h1>
+    <div class="login">
+      <form class="loginForm">
+        <label for="username">User Name</label>
+        <input type="text" name="username" id="username" />
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" />
+        <button type="submit">Login</button>
+      </form>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/signup.html">Sign Up</a></li>
+      </ul>
+    </nav>
+    <script>
+      const form = document.querySelector('form');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const userName = formData.get('username');
+        const password = formData.get('password');
+
+        const data = await fetch('/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userName, password }),
+        });
+
+        if (data.status.toString().startsWith('4')) {
+          alert("Couldn't login. Invalid username or password");
+        } else {
+          alert('Login successfull');
+          window.location.reload();
+          // window.location.href = '/loginSuccess.html';
+        }
+
+        console.log(...formData);
+        console.log(data);
+      });
+    </script>
+  </body>
+</html>
